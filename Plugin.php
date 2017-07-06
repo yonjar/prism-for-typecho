@@ -5,7 +5,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
  *
  * @package SyntaxHighlighter
  * @author wdl
- * @version 1.0.0
+ * @version 1.0.1
  * @link https://delinwang.herokuapp.com
  */
 class SyntaxHighlighter_Plugin implements Typecho_Plugin_Interface
@@ -90,13 +90,15 @@ class SyntaxHighlighter_Plugin implements Typecho_Plugin_Interface
                var preList = document.getElementsByTagName('pre');
                var pattern = /lang-(\w+)/;
                for (var i = 0; i < preList.length; i++) {
-                   var codeList = preList[i].getElementsByTagName('pre');
+                   var codeList = preList[i].getElementsByTagName('code');
                    for (var j = 0; j < codeList.length; j++) {
                        var code = codeList[j];
                        var className = code.className;
                        if (!!className) {
                            var newClassName = className.replace(pattern, "language-$1");
                            code.setAttribute("class", newClassName);
+                       } else {
+                           code.setAttribute("class", "language-none");
                        }
                    }
                }
