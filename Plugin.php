@@ -96,9 +96,9 @@ class SyntaxHighlighter_Plugin implements Typecho_Plugin_Interface
                        var className = code.className;
                        if (!!className) {
                            var newClassName = className.replace(pattern, "language-$1");
-                           code.setAttribute("class", newClassName);
+                           code.setAttribute("class", newClassName + " line-numbers");
                        } else {
-                           code.setAttribute("class", "language-none");
+                           code.setAttribute("class", "language-none line-numbers");
                        }
                    }
                }
