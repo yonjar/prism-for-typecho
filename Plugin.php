@@ -70,10 +70,11 @@ class SyntaxHighlighter_Plugin implements Typecho_Plugin_Interface
      */
     public static function header() {
         $settings = Helper::options()->plugin('SyntaxHighlighter');
-        $path = Helper::options()->pluginUrl . '/SyntaxHighlighter/theme/' . $settings->theme . '/';
+        $js = Helper::options()->pluginUrl . '/SyntaxHighlighter/theme/prism.js';
+        $css = Helper::options()->pluginUrl . '/SyntaxHighlighter/theme/' . $settings->theme . '/prism.css';
 
-        echo '<script type="text/javascript" src="' . $path . 'prism.js"></script>' . "\n";
-        echo '<link rel="stylesheet" type="text/css" href="' . $path . 'prism.css" />' . "\n";
+        echo '<script type="text/javascript" src="' . $js . '"></script>' . "\n";
+        echo '<link rel="stylesheet" type="text/css" href="' . $css . '" />' . "\n";
     }
 
     /**
