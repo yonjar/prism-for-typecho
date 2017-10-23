@@ -5,7 +5,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
  *
  * @package SyntaxHighlighter
  * @author wdl
- * @version 1.0.1
+ * @version 1.0.2
  * @link https://delinwang.herokuapp.com
  */
 class SyntaxHighlighter_Plugin implements Typecho_Plugin_Interface
@@ -51,6 +51,10 @@ class SyntaxHighlighter_Plugin implements Typecho_Plugin_Interface
             'coy' => 'Coy',
             'solarized-light' => 'Solarized Light'), 'default', _t('高亮主题:'), _t('选择一个你喜欢的高亮主题。'));
         $form->addInput($theme);
+
+        $show_line_nums = new Typecho_Widget_Helper_Form_Element_Select('show_line_nums', array('y' => '是',
+            'n' => '否'), 'y', _t('显示行号:'), _t('是否显示行号？'));
+        $form->addInput($show_line_nums);
     }
 
     /**
@@ -84,10 +88,13 @@ class SyntaxHighlighter_Plugin implements Typecho_Plugin_Interface
      * @return void
      */
     public static function footer() {
+        $settings = Helper::options()->plugin('SyntaxHighlighter');
+        $line_nums_css = $settings->show_line_nums === 'y' ? 'line-numbers' : '';
 
         echo <<<EOF
        <script type="text/javascript">
            if (typeof(Prism) !== undefined) {
+               // 处理pre > code 内代码样式
                var preList = document.getElementsByTagName('pre');
                var pattern = /lang-(\w+)/;
                for (var i = 0; i < preList.length; i++) {
@@ -97,12 +104,18 @@ class SyntaxHighlighter_Plugin implements Typecho_Plugin_Interface
                        var className = code.className;
                        if (!!className) {
                            var newClassName = className.replace(pattern, "language-$1");
-                           code.setAttribute("class", newClassName + " line-numbers");
+                           code.setAttribute("class", newClassName + " $line_nums_css");
                        } else {
-                           code.setAttribute("class", "language-none line-numbers");
+                           code.setAttribute("class", "language-none $line_nums_css");
                        }
                    }
                }
+
+               // 处理 :not(pre) > code 内代码样式
+               var codeList = document.querySelectorAll(':not(pre)>code')
+               for (var i=0; i < codeList.length; i++){
+                   codeList[i].setAttribute("class", "language-none");
+              }
            }
        </script>
 EOF;
