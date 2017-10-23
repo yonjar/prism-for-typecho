@@ -94,9 +94,10 @@ class SyntaxHighlighter_Plugin implements Typecho_Plugin_Interface
         echo <<<EOF
        <script type="text/javascript">
            if (typeof(Prism) !== undefined) {
-               // 处理pre > code 内代码样式
-               var preList = document.getElementsByTagName('pre');
+               // 处理 pre > code 内代码样式
                var pattern = /lang-(\w+)/;
+
+               var preList = document.getElementsByTagName('pre');
                for (var i = 0; i < preList.length; i++) {
                    var codeList = preList[i].getElementsByTagName('code');
                    for (var j = 0; j < codeList.length; j++) {
@@ -113,7 +114,7 @@ class SyntaxHighlighter_Plugin implements Typecho_Plugin_Interface
 
                // 处理 :not(pre) > code 内代码样式
                var codeList = document.querySelectorAll(':not(pre)>code')
-               for (var i=0; i < codeList.length; i++){
+               for (var i = 0; i < codeList.length; i++) {
                    codeList[i].setAttribute("class", "language-none");
               }
            }
