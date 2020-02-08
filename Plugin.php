@@ -5,7 +5,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
  *
  * @package SyntaxHighlighter
  * @author wdl
- * @version 1.0.2
+ * @version 1.0.3
  * @link https://delinwang.herokuapp.com
  */
 class SyntaxHighlighter_Plugin implements Typecho_Plugin_Interface
@@ -49,13 +49,20 @@ class SyntaxHighlighter_Plugin implements Typecho_Plugin_Interface
             'okaidia' => 'Okaidia',
             'twilight' => 'Twilight',
             'coy' => 'Coy',
-            'solarized-light' => 'Solarized Light'), 'default', _t('高亮主题:'), _t('选择一个你喜欢的高亮主题。'));
+            'solarized-light' => 'Solarized Light',
+            'tomorrow-night' => 'Tomorrow Night'), 'default', _t('高亮主题:'), _t('选择一个你喜欢的高亮主题。'));
         $form->addInput($theme);
 
         $show_line_nums = new Typecho_Widget_Helper_Form_Element_Select('show_line_nums', array('y' => '是',
             'n' => '否'), 'y', _t('显示行号:'), _t('是否显示行号？'));
+
+        $show_match_braces = new Typecho_Widget_Helper_Form_Element_Select('show_match_braces', array('y' => '是',
+            'n' => '否'), 'y', _t('显示括号匹配:'), _t('是否显示括号匹配？'));
+
         $form->addInput($show_line_nums);
-    }
+
+        $form->addInput($show_match_braces);
+        }
 
     /**
      * 个人用户的配置面板
@@ -75,10 +82,12 @@ class SyntaxHighlighter_Plugin implements Typecho_Plugin_Interface
     public static function header() {
         $settings = Helper::options()->plugin('SyntaxHighlighter');
         $js = Helper::options()->pluginUrl . '/SyntaxHighlighter/theme/prism.js';
-        $css = Helper::options()->pluginUrl . '/SyntaxHighlighter/theme/' . $settings->theme . '/prism.css';
+        $css = Helper::options()->pluginUrl . '/SyntaxHighlighter/theme/' . $settings->theme . '/prism.min.css';
+        $css_global = Helper::options()->pluginUrl . '/SyntaxHighlighter/theme/global.min.css';
 
         echo '<script type="text/javascript" src="' . $js . '"></script>' . "\n";
         echo '<link rel="stylesheet" type="text/css" href="' . $css . '" />' . "\n";
+        echo '<link rel="stylesheet" type="text/css" href="' . $css_global . '" />' . "\n";
     }
 
     /**
@@ -90,6 +99,8 @@ class SyntaxHighlighter_Plugin implements Typecho_Plugin_Interface
     public static function footer() {
         $settings = Helper::options()->plugin('SyntaxHighlighter');
         $line_nums_css = $settings->show_line_nums === 'y' ? 'line-numbers' : '';
+        $show_match_braces = $settings->show_match_braces === 'y' ? 'match-braces' : '';
+        
 
         echo <<<EOF
        <script type="text/javascript">
@@ -99,16 +110,17 @@ class SyntaxHighlighter_Plugin implements Typecho_Plugin_Interface
 
                var preList = document.getElementsByTagName('pre');
                for (var i = 0; i < preList.length; i++) {
-                   var codeList = preList[i].getElementsByTagName('code');
-                   for (var j = 0; j < codeList.length; j++) {
-                       var code = codeList[j];
-                       var className = code.className;
-                       if (!!className) {
-                           var newClassName = className.replace(pattern, "language-$1");
-                           code.setAttribute("class", newClassName + " $line_nums_css");
-                       } else {
-                           code.setAttribute("class", "language-none $line_nums_css");
-                       }
+                    // preList[i].setAttribute("data-download-link","")
+                    var codeList = preList[i].getElementsByTagName('code');
+                    for (var j = 0; j < codeList.length; j++) {
+                        var code = codeList[j];
+                        var className = code.className;
+                        if (!!className) {
+                            var newClassName = className.replace(pattern, "language-$1");
+                            code.setAttribute("class", newClassName + " $line_nums_css $show_match_braces");
+                        } else {
+                            code.setAttribute("class", "language-none $line_nums_css $show_match_braces");
+                        }
                    }
                }
 

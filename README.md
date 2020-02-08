@@ -1,6 +1,19 @@
 Prism for Typecho
 =================
 
+### 2020年2月8日
+
+添加以下特性:
+
+- Line Numbers
+- Show Language
+- Inline color
+- Toolbar
+- Copy to Clipboard Button
+- Match braces
+
+---
+
 本插件基于[firzen][1]的SyntaxHighlighter-For-Typecho修改，是一款使用Prism作为typehco代码高亮的插件。
 
 ### 支持的语言
@@ -24,9 +37,9 @@ Prism for Typecho
 ```bash
 
 # 切换到typecho的插件目录
-cd /home/wdl/typecho/usr/plugins
+cd /path/to/typecho/usr/plugins
 
-git clone git@github.com:wangdelin/prism-for-typecho.git SyntaxHighlighter
+git clone https://github.com/yonjar/prism-for-typecho.git SyntaxHighlighter
 ```
 
 [1]: https://github.com/firzen
