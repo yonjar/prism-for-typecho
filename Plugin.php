@@ -50,14 +50,20 @@ class SyntaxHighlighter_Plugin implements Typecho_Plugin_Interface
             'twilight' => 'Twilight',
             'coy' => 'Coy',
             'solarized-light' => 'Solarized Light',
-            'tomorrow-night' => 'Tomorrow Night'), 'default', _t('高亮主题:'), _t('选择一个你喜欢的高亮主题。'));
-        $form->addInput($theme);
+            'tomorrow-night' => 'Tomorrow Night',
+            'extra' => '自定义/插件目录下extra'), 'default', _t('高亮主题:'), _t('选择一个你喜欢的高亮主题。'));
+
+        $extra_css = new Typecho_Widget_Helper_Form_Element_Text('extra_css', NULL, NULL, _t('自定义主题样式，需提前将CSS放进插件目录下extra文件夹里'), _t('填入CSS文件名，如material_oceanic.css'));
 
         $show_line_nums = new Typecho_Widget_Helper_Form_Element_Select('show_line_nums', array('y' => '是',
             'n' => '否'), 'y', _t('显示行号:'), _t('是否显示行号？'));
 
         $show_match_braces = new Typecho_Widget_Helper_Form_Element_Select('show_match_braces', array('y' => '是',
             'n' => '否'), 'y', _t('显示括号匹配:'), _t('是否显示括号匹配？'));
+            
+        $form->addInput($theme);
+
+        $form->addInput($extra_css);
 
         $form->addInput($show_line_nums);
 
@@ -82,12 +88,19 @@ class SyntaxHighlighter_Plugin implements Typecho_Plugin_Interface
     public static function header() {
         $settings = Helper::options()->plugin('SyntaxHighlighter');
         $js = Helper::options()->pluginUrl . '/SyntaxHighlighter/theme/prism.js';
-        $css = Helper::options()->pluginUrl . '/SyntaxHighlighter/theme/' . $settings->theme . '/prism.min.css';
         $css_global = Helper::options()->pluginUrl . '/SyntaxHighlighter/theme/global.min.css';
-
+        $css_plugin = Helper::options()->pluginUrl . '/SyntaxHighlighter/theme/extra/plugin.min.css';
+        $css = Helper::options()->pluginUrl . '/SyntaxHighlighter/theme/' . $settings->theme . '/prism.min.css';
+        
         echo '<script type="text/javascript" src="' . $js . '"></script>' . "\n";
-        echo '<link rel="stylesheet" type="text/css" href="' . $css . '" />' . "\n";
         echo '<link rel="stylesheet" type="text/css" href="' . $css_global . '" />' . "\n";
+        
+        if ($settings->theme == 'extra') {
+            $css = Helper::options()->pluginUrl . '/SyntaxHighlighter/theme/extra/' . $settings->extra_css;
+            echo '<link rel="stylesheet" type="text/css" href="' . $css_plugin . '" />' . "\n";
+        }
+
+        echo '<link rel="stylesheet" type="text/css" href="' . $css . '" />' . "\n";
     }
 
     /**
