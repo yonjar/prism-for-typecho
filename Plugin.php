@@ -92,15 +92,14 @@ class SyntaxHighlighter_Plugin implements Typecho_Plugin_Interface
         $css_plugin = Helper::options()->pluginUrl . '/SyntaxHighlighter/theme/extra/plugin.min.css';
         $css = Helper::options()->pluginUrl . '/SyntaxHighlighter/theme/' . $settings->theme . '/prism.min.css';
         
-        echo '<script type="text/javascript" src="' . $js . '"></script>' . "\n";
-        echo '<link rel="stylesheet" type="text/css" href="' . $css_global . '" />' . "\n";
-        
         if ($settings->theme == 'extra') {
             $css = Helper::options()->pluginUrl . '/SyntaxHighlighter/theme/extra/' . $settings->extra_css;
             echo '<link rel="stylesheet" type="text/css" href="' . $css_plugin . '" />' . "\n";
         }
-
+        
+        echo '<script type="text/javascript" src="' . $js . '"></script>' . "\n";
         echo '<link rel="stylesheet" type="text/css" href="' . $css . '" />' . "\n";
+        echo '<link rel="stylesheet" type="text/css" href="' . $css_global . '" />' . "\n";
     }
 
     /**
