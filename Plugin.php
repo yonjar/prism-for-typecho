@@ -4,9 +4,9 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
  * Prism for Typecho
  *
  * @package SyntaxHighlighter
- * @author wdl
- * @version 1.0.3
- * @link https://delinwang.herokuapp.com
+ * @author yonjar
+ * @version 1.1.1
+ * @link https://yuika.love/to/archives/60/
  */
 class SyntaxHighlighter_Plugin implements Typecho_Plugin_Interface
 {
