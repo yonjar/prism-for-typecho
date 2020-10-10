@@ -1,10 +1,10 @@
 # Prism for Typecho
 
----
-
 本插件基于[firzen][1]的 SyntaxHighlighter-For-Typecho 修改，
 再基于[wangdelin][3]的 prism-for-typecho 修改，以支持更多 Prismjs 特性和颜色主题，
 是一款使用 Prism 作为 typehco 代码高亮的插件。
+
+---
 
 ### 2020 年 3 月 7 日
 
